@@ -1,0 +1,16 @@
+{
+    "mongo_instances": {
+        "primary_1": {
+            "connect": false,
+                      "db": "",
+                      "host": "",
+                      "user": "",
+                      "pass": "",
+                      "options": ""
+
+        }
+    },
+    "application": {
+        "port": 1111
+    }
+}

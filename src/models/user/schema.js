@@ -1,0 +1,46 @@
+const { Schema } = require("mongoose");
+
+let schema = new Schema({
+    _id: Schema.Types.ObjectId,
+    name: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 50
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    status: {
+        type: String,
+        required: true,
+        default: constants.status.pending,
+        enum: constants.status.enum
+    },
+    password: {
+        type: String,
+        required: true,
+        bcrypt: true
+    },
+    address_list: {
+        type: [address],
+        max: 5
+    },
+},
+{
+    collection: "users",
+    timestamps: {
+        createdAt: "created",
+        updated: ""
+    },
+    autoCreate: false,
+    versionKey: false
+});
+
+schema.plugin(require('mongoose-bcrypt'));
+
+module.exports = {
+    schema
+};
