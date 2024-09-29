@@ -4,20 +4,24 @@ const mongoose = require('mongoose');
 class Client {
     constructor(config, options){
         this.config = config;
-        this.optios = options;
+        this.options = options;
     }
 
     connect(){
-        let conString = `mongodb://${this.config.host}/${this.config.db}?${this.config.options}`;
+        let conString = `mongodb://${this.config.host}/${this.config.db}`;
         
         if(_.size(this.config.user) && _.size(this.config.pass)){
-            conString = `mongodb://${this.config.user}:${this.config.pass}@${this.config.host}/${this.config.db}?${this.config.options}`;
+            conString = `mongodb://${this.config.user}:${this.config.pass}@${this.config.host}/${this.config.db}`;
         }
 
         if(_.size(this.options) == 0){
             this.options = {}
+        } else {
+            conString += `?${this.config.options}`
         }
-        return mongoose.createConnection(conString, this.options);
+
+        console.log({conString})
+        return mongoose.createConnection(conString, this.options || {});
     }
 }
 

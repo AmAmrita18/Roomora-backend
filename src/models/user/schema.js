@@ -4,7 +4,7 @@ const { address } = require("./address");
 const { booking } = require("./booking")
 
 let schema = new Schema({
-    _id: Schema.Types.ObjectId,
+    // _id: Schema.Types.ObjectId,
     name: {
         type: String,
         required: true,
@@ -31,7 +31,7 @@ let schema = new Schema({
         type: String,
         required: false
     },
-    feedacks: {
+    feedbacks: {
         type: [String],
         required: false,
         default: []

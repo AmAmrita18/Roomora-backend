@@ -7,7 +7,7 @@ utilities.Registry.set("config", config);
 utilities.Registry.set("env", env);
 
 //initialize database and clients
-let mongoCon = (new utilities.DBClient.MongoDB.Client(config.mongo_instances.primary_1, {})).connect();
+let mongoCon = (new utilities.DBClient.MongoDB.Client(config.mongo_instances.primary_1, null)).connect();
 utilities.Registry.set("mongodb", mongoCon);
 
 // initializing models on the mongodb connection
@@ -15,7 +15,7 @@ const schemaList = require("./src/models");
 utilities.Registry.set("schemas", schemaList);
 let models = {};
 _.each(schemaList, (value, key) => {
-	models[key] = mongoCon.model(key, value.schema);
+	models[key] = mongoCon.model(key, value.schema.schema);
 });
 utilities.Registry.set("models", models);
 
@@ -43,6 +43,13 @@ app.use(async (ctx, next) => {
 		};
 		ctx.app.emit('error', error);
 	}
+});
+
+// route middleware and initialization
+const routesList = require('./src/routes');
+_.each(routesList, (router, key) => {
+	app.use(router.routes());
+	app.use(router.allowedMethods());
 });
 
 let server = app.listen(config.application.port, () => {
