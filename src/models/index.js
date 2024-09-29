@@ -1,4 +1,5 @@
 module.exports = {
     User: require("./user"),
-    Admin: require("./admin")
+    Admin: require("./admin"),
+    Hotels: require("./hotels")
 }
