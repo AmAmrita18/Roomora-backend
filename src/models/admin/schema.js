@@ -1,4 +1,5 @@
 const { Schema } = require("mongoose");
+const constants = require("./constants");
 
 let schema = new Schema({
     _id: Schema.Types.ObjectId,
@@ -24,6 +25,17 @@ let schema = new Schema({
         required: true,
         bcrypt: true
     },
+    profile_photo: {
+        type: String,
+        required: false
+    },
+    type: {
+        type: String,
+        enum: constants.admin_type.enum,
+        default: constants.admin_type.sub_admin,
+        required: true
+    },
+    hotels: [String]
 },
 {
     collection: "admins",

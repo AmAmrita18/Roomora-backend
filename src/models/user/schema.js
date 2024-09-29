@@ -1,4 +1,7 @@
 const { Schema } = require("mongoose");
+const constants = require("./constants");
+const { address } = require("./address");
+const { booking } = require("./booking")
 
 let schema = new Schema({
     _id: Schema.Types.ObjectId,
@@ -15,7 +18,7 @@ let schema = new Schema({
     },
     status: {
         type: String,
-        required: true,
+        required: false,
         default: constants.status.pending,
         enum: constants.status.enum
     },
@@ -24,6 +27,16 @@ let schema = new Schema({
         required: true,
         bcrypt: true
     },
+    profile_photo: {
+        type: String,
+        required: false
+    },
+    feedacks: {
+        type: [String],
+        required: false,
+        default: []
+    },
+    bookings: [booking],
     address_list: {
         type: [address],
         max: 5
@@ -33,7 +46,7 @@ let schema = new Schema({
     collection: "users",
     timestamps: {
         createdAt: "created",
-        updated: ""
+        updatedAt: "modified"
     },
     autoCreate: false,
     versionKey: false
