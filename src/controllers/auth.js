@@ -11,6 +11,7 @@ class Auth extends BaseClass {
             
         }
     }
+    
     async register(){
         let {value, error} = Validation.Auth.UserRegisterSchema.validate(this.ctx.request.body);
         if(error){
@@ -42,13 +43,12 @@ class Auth extends BaseClass {
 
         this.ctx.body = ({
             success: true,
-            message: "OLA!!!"
+            message: "User registered successfully"
         })
     }
 
     async login(){
         const { email, password } = this.ctx.request.body;
-        console.log({req: this.ctx.request.body})
         let user = await this.models.User.findOne({email: email});
         if(!user){
             this.throwError("404", "User not found");
@@ -63,8 +63,58 @@ class Auth extends BaseClass {
 
         this.ctx.body = {
             success: true,
-            message: "Login successful",
+            message: "Login Successfully!",
             user: user
+        };
+    }
+
+    async registerAdmin() {
+        const {email, password, name} = this.ctx.request.body;
+        let admin = null;
+        try {
+            admin = new this.models.Admin({
+                email: email,
+                password: password,
+                name: name
+            })
+
+            console.log('Admin registered successfully')
+        } catch (err) {
+            console.log(err)
+            this.throwError("301")
+        }
+
+        try {
+            await admin.save()
+        } catch (err) {
+            console.log(err)
+            this.throwError("301")
+        }
+
+        this.ctx.body = ({
+            success: true,
+            message: "Admin registered successfully"
+        })
+    }
+
+    async loginAdmin(){
+        const {email, password} = this.ctx.request.body;
+        let admin = await this.models.Admin.findOne({email: email});
+        if(!admin){
+            this.throwError("404", "Admin Not Found");
+        }
+
+        const isPasswordValid = await admin.verifyPassword(password);
+
+        if(!isPasswordValid){
+            this.throwError("201", "Invalid Password");
+            return;
+        }
+
+        this.ctx.body = {
+            success: true,
+            message: "Login Successfully!",
+            admin: admin
         };
     }
 }

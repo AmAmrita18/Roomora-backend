@@ -25,9 +25,9 @@ let schema = new Schema({
         maxlength: 500,
         default: "No description provided"
     },
-    property_type: {
+    hotel_type: {
         type: String,
-        enum: constants.property_type.enum,
+        enum: constants.hotel_type.enum,
         required: true
     },
     facilities: {

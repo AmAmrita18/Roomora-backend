@@ -1,5 +1,5 @@
 module.exports = {
-    property_type: {
+    hotel_type: {
         hotels: "Hotels",
         guest_houses: "Guesthouses",
         resorts: "Resorts",
@@ -11,6 +11,6 @@ module.exports = {
         motels: "Motels",
         boats: "Boats",
         farm_stays: "Farm Stays",
-        enum: ["Hotels", "Guesthouses", "Resorts", "Apartments", "Hostels","Homestays", "Villas", "Vacation Homes", "Motels", "Boats", "Farm Stays"],
+        enum: ["Hotel", "Guesthouse", "Resort", "Apartment", "Hostel","Homestay", "Villa", "Vacation Home", "Motel", "Boat", "Farm Stay"],
     }
 }

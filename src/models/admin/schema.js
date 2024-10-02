@@ -1,8 +1,9 @@
 const { Schema } = require("mongoose");
 const constants = require("./constants");
+const { address } = require("../user/address");
 
 let schema = new Schema({
-    _id: Schema.Types.ObjectId,
+    // _id: Schema.Types.ObjectId,  // -> document must have an _id before saving
     name: {
         type: String,
         required: true,
@@ -14,12 +15,12 @@ let schema = new Schema({
         required: true,
         unique: true
     },
-    status: {
-        type: String,
-        required: true,
-        default: constants.status.pending,
-        enum: constants.status.enum
-    },
+    // status: {
+    //     type: String,
+    //     required: true,
+    //     default: constants.status.pending,
+    //     enum: constants.status.enum
+    // },
     password: {
         type: String,
         required: true,
@@ -29,10 +30,14 @@ let schema = new Schema({
         type: String,
         required: false
     },
+    address_list: {
+        type: [address],
+        max: 5
+    },
     type: {
         type: String,
         enum: constants.admin_type.enum,
-        default: constants.admin_type.sub_admin,
+        default: constants.admin_type.admin,
         required: true
     },
     hotels: [String]
