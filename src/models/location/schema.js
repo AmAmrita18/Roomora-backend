@@ -1,7 +1,7 @@
 const { Schema } = require("mongoose");
-const constants = require("./constants")
+const constants = require("../user/constants")
 
-let address =new Schema({
+let schema =new Schema({
     city: {
         type: String,
         required: true 
@@ -31,6 +31,15 @@ let address =new Schema({
         default: constants.address_type.home,
         enum: constants.address_type.enum
     }
-}, {_id: false});
+},
+{
+    collection: "locations",
+    timestamps: {
+        createdAt: "created",
+        updatedAt: "modified"
+    },
+    autoCreate: true,
+    versionKey: false
+});
 
-module.exports = { address }
+module.exports = { schema }

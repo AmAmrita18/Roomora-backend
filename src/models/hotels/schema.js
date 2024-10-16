@@ -1,15 +1,8 @@
 const { Schema } = require("mongoose");
 const constants = require("./constants");
-const location = require("./location");
-const room = require("./room");
 const feedback = require("./feedback");
 
 let schema = new Schema({
-    hotel_id: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        auto: true
-    },
     hotel_name: {
         type: String,
         required: true,
@@ -17,7 +10,8 @@ let schema = new Schema({
         maxlength: 100
     },
     location: {
-        type: location,
+        type: Schema.Types.ObjectId,
+        ref: 'Location',
         required: true
     },
     description: {
@@ -35,7 +29,19 @@ let schema = new Schema({
         required: true,
         default: []
     },
-    rooms: [room],
+    rooms: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Room'
+        }],
+        validate: {
+            validator: function(rooms) {
+                return rooms.length >= 1;
+            },
+            message: "A hotel must have at least one room."
+        },
+        required: true
+    },
     photos: {
         type: [String], // Array of photo URLs
         validate: {
@@ -45,6 +51,11 @@ let schema = new Schema({
             message: "A hotel must have between 2 and 10 photos."
         },
         required: [true, "At least 2 photos are required."]
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'Owner',
+        required: true
     },
     feedbacks: [feedback],
 },

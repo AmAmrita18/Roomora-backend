@@ -1,6 +1,6 @@
 const { Schema } = require("mongoose");
 
-let feedback = new Schema({
+let schema = new Schema({
     feedback_id: {
         type: Schema.Types.ObjectId,
         auto: true
@@ -34,4 +34,4 @@ let feedback = new Schema({
     },
 });
 
-module.exports = { feedback };
+module.exports = { schema };

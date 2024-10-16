@@ -1,7 +1,5 @@
 const { Schema } = require("mongoose");
 const constants = require("./constants");
-const { address } = require("./address");
-const { booking } = require("./booking")
 
 let schema = new Schema({
     // _id: Schema.Types.ObjectId,
@@ -19,13 +17,17 @@ let schema = new Schema({
     status: {
         type: String,
         required: false,
-        default: constants.status.pending,
+        default: constants.status.active,
         enum: constants.status.enum
     },
     password: {
         type: String,
         required: true,
         bcrypt: true
+    },
+    phone:{
+        type: String,
+        default: ''
     },
     profile_photo: {
         type: String,
@@ -36,10 +38,16 @@ let schema = new Schema({
         required: false,
         default: []
     },
-    bookings: [booking],
-    address_list: {
-        type: [address],
-        max: 5
+    bookings: {
+        type:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Bookings'
+        }]
+    },
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location',
+        default: null
     },
 },
 {

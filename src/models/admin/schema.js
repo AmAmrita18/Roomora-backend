@@ -1,6 +1,5 @@
 const { Schema } = require("mongoose");
 const constants = require("./constants");
-const { address } = require("../user/address");
 
 let schema = new Schema({
     // _id: Schema.Types.ObjectId,  // -> document must have an _id before saving
@@ -26,13 +25,16 @@ let schema = new Schema({
         required: true,
         bcrypt: true
     },
+    phone: {
+        type: String,
+    },
     profile_photo: {
         type: String,
         required: false
     },
-    address_list: {
-        type: [address],
-        max: 5
+    address: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location'
     },
     type: {
         type: String,
@@ -40,7 +42,12 @@ let schema = new Schema({
         default: constants.admin_type.admin,
         required: true
     },
-    hotels: [String]
+    hotels: {
+        type:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Hotels'
+        }],
+    }
 },
 {
     collection: "admins",

@@ -11,6 +11,6 @@ module.exports = {
         motels: "Motels",
         boats: "Boats",
         farm_stays: "Farm Stays",
-        enum: ["Hotel", "Guesthouse", "Resort", "Apartment", "Hostel","Homestay", "Villa", "Vacation Home", "Motel", "Boat", "Farm Stay"],
-    }
+        enum: ["Hotels", "Guesthouses", "Resorts", "Apartments", "Hostels","Homestays", "Villas", "Vacation Homes", "Motels", "Boats", "Farm Stays"],
+    },
 }

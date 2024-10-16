@@ -3,6 +3,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(`./config/env/${env}.config.json`)
 const utilities = require("./src/utilities");
 
+
 utilities.Registry.set("config", config);
 utilities.Registry.set("env", env);
 
@@ -26,7 +27,6 @@ require('koa-qs')(app, 'extended');
 
 //koa-body middleware
 app.use(koaBody());
-
 //cors middleware
 app.use(async (ctx, next) => {
 	try {
@@ -57,3 +57,8 @@ let server = app.listen(config.application.port, () => {
 });
 
 module.exports = server;
+
+
+// "retryWrites": true,
+// "w": "majority",
+// "appName": "roomora"

@@ -1,16 +1,30 @@
 const {Schema} = require("mongoose");
-const constants = require("./constants")
+const constants = require("./constants");
+const { required } = require("joi");
 
-const booking = new Schema ({
+const schema = new Schema ({
     booking_id: Schema.Types.ObjectId,
-    user_id: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    hotel_id: {
+    hotel: {
         type: Schema.Types.ObjectId,
-        ref: "Hotel",
+        ref: "Hotels",
+        required: true
+    },
+    room: {
+        type: Schema.Types.ObjectId,
+        ref: "Room",
+        required: true
+    },
+    check_in: {
+        type: Date,
+        required: true
+    },
+    check_out: {
+        type: Date,
         required: true
     },
     booking_status: {
@@ -30,13 +44,20 @@ const booking = new Schema ({
         enum: constants.email_status.enum,
         default: constants.email_status.pending,
         required: true
+    },
+    totalPrice: {
+        type: Number,
+        required: true
     }
 }, 
 {
+    collection: "bookings",
     timestamps: {
         createdAt: "created",
         updatedAt: "modified"
     },
+    autoCreate: false,
+    versionKey: false
 })
 
-module.exports = { booking };
+module.exports = { schema };

@@ -1,8 +1,10 @@
 const { Schema } = require("mongoose");
+const constants = require("./constants");
 
-let room = new Schema({
+let schema = new Schema({
     roomType: {
         type: String,
+        enum: constants.room_type.enum,
         required: true
     },
     total_rooms: {
@@ -21,17 +23,26 @@ let room = new Schema({
         min: 0
     },
     discount: {
-        type: String,
+        type: Number,
         min: 0,
         max: 70,
+        default: 0
     },
     room_facilities: {
         type: [String],
-        required: true,
         default: []
     },
 
 
-}, { _id: false });
+},
+{
+    collection: "rooms",
+    timestamps: {
+        createdAt: "created",
+        updatedAt: "modified"
+    },
+    autoCreate: true,
+    versionKey: false
+});
 
-module.exports = { room }
+module.exports = { schema }
