@@ -77,48 +77,53 @@ class Hotels extends BaseClass {
 
     async updateHotel() {
         const { admin_id, _id, hotel_name, location, description, hotel_type, facilities, rooms, photos, owner } = this.ctx.request.body;
-
-        console.log({admin_id})
-
+    
+        console.log({ admin_id });
+    
         let admin = await this.models.Admin.findOne({ _id: admin_id });
         if (!admin) {
             return this.throwError("404", "Admin not found");
         }
-
+    
         let hotel = await this.models.Hotels.findOne({ _id: _id })
             .populate('rooms')
             .populate('location')
             .populate({
                 path: 'owner',
                 populate: {
-                    path: 'address', 
-                    model: 'Location' 
+                    path: 'address',
+                    model: 'Location'
                 }
-            })
+            });
+            
         if (!hotel) {
-            return this.throwError("404", "Hotel not found")
+            return this.throwError("404", "Hotel not found");
         }
-
+    
+        // Validate the required fields
         if (!hotel_name || !location || !hotel_type || !photos || photos.length < 2 || !rooms || rooms.length < 1) {
             return this.throwError("400", "Required fields are missing or invalid.");
         }
-
+    
+        // Update Owner's Address
         const updatedOwnerAddress = await this.models.Location.findOneAndUpdate(
             { _id: hotel.owner.address._id },
             { $set: owner.address },
             { new: true, upsert: true }
         );
         await updatedOwnerAddress.save();
-
-        owner.address = updatedOwnerAddress._id
-
+    
+        owner.address = updatedOwnerAddress._id;
+    
+        // Update Owner details
         const updatedOwner = await this.models.Owner.findOneAndUpdate(
             { _id: hotel.owner._id },
             { $set: owner },
             { new: true, upsert: true }
         );
         await updatedOwner.save();
-
+    
+        // Update Hotel's Location
         const updatedLocation = await this.models.Location.findOneAndUpdate(
             { _id: hotel.location._id },
             { $set: location },
@@ -126,38 +131,51 @@ class Hotels extends BaseClass {
         );
         await updatedLocation.save();
     
+        // Handle Rooms (Update existing rooms and add new rooms if necessary)
         const roomPromises = rooms.map(async (room, i) => {
-            const updatedRoom = await this.models.Room.findOneAndUpdate(
-                { _id: hotel.rooms[i]._id },
-                { $set: room },
-                { new: true, upsert: true }
-            );
-            return await updatedRoom.save();
+            if (hotel.rooms[i]) {
+                // Update existing room
+                const updatedRoom = await this.models.Room.findOneAndUpdate(
+                    { _id: hotel.rooms[i]._id },
+                    { $set: room },
+                    { new: true, upsert: true }
+                );
+                return await updatedRoom.save();
+            } else {
+                // Add new room if it doesn't exist in the hotel's rooms array
+                const newRoom = new this.models.Room(room);
+                await newRoom.save();
+                return newRoom;
+            }
         });
         const savedRooms = await Promise.all(roomPromises);
+    
+        // Update hotel details
         hotel.hotel_name = hotel_name;
         hotel.location = updatedLocation._id;
         hotel.description = description || "No description provided!";
         hotel.photos = photos;
         hotel.hotel_type = hotel_type;
         hotel.facilities = facilities || [];
-        hotel.owner = updatedOwner._id
+        hotel.owner = updatedOwner._id;
         hotel.rooms = savedRooms.map(room => room._id);
-        
+    
         let updatedHotel;
         try {
             updatedHotel = await hotel.save();
         } catch (err) {
-            console.log(err)
-            this.throwError("201")
-        } 
-
+            console.log(err);
+            this.throwError("500", "Error saving hotel");
+        }
+    
+        // Send success response
         this.ctx.body = {
             status: "success",
             message: "Hotel updated successfully",
-            hotel: hotel
+            hotel: updatedHotel
         };
     }
+    
 
     async deleteHotel() {
         const { email, hotel_id } = this.ctx.request.body;
