@@ -72,8 +72,6 @@ class Hotels extends BaseClass {
             data: hotel
         };
     }
-    
-    
 
     async updateHotel() {
         const { admin_id, _id, hotel_name, location, description, hotel_type, facilities, rooms, photos, owner } = this.ctx.request.body;
@@ -176,7 +174,6 @@ class Hotels extends BaseClass {
         };
     }
     
-
     async deleteHotel() {
         const { email, hotel_id } = this.ctx.request.body;
         let admin = await this.models.Admin.findOne({ email });

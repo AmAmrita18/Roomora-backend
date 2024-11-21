@@ -25,9 +25,7 @@ const { koaBody } = require('koa-body');
 const app = new Koa();
 require('koa-qs')(app, 'extended');
 
-//koa-body middleware
 app.use(koaBody());
-//cors middleware
 app.use(async (ctx, next) => {
 	try {
 		ctx.set('Access-Control-Allow-Origin', '*');
@@ -57,8 +55,3 @@ let server = app.listen(config.application.port, () => {
 });
 
 module.exports = server;
-
-
-// "retryWrites": true,
-// "w": "majority",
-// "appName": "roomora"

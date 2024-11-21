@@ -9,7 +9,7 @@ async function authenticateToken(ctx, next) {
         return;
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1];  //Bearer <token>
     if (!token) {
         ctx.status = 403;
         ctx.body = { success: false, message: "Token is missing" };

@@ -67,6 +67,7 @@ class User extends BaseClass {
             message: "Password Updated successfully!"
         }
     }
+    
     async getUserBookings() {
         try {
             const { user_id } = this.ctx.request.body;
