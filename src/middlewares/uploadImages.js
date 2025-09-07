@@ -1,4 +1,4 @@
-const config = require("../../config/env/development.config.json")
+const config = require(`../../config/env/${process.env.NODE_ENV}.config.json`)
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({

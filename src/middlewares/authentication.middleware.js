@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../../config/env/development.config.json')
+const config = require(`../../config/env/${process.env.NODE_ENV}.config.json`)
 
 async function authenticateToken(ctx, next) {
     const authHeader = ctx.request.headers['authorization'];
