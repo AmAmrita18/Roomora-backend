@@ -1,0 +1,21 @@
+{
+  "mongo_instances": {
+    "primary_1": {
+      "connect": true,
+      "db": "Roomora",
+      "host": "roomora.ecfrn.mongodb.net",
+      "user": "amamrita",
+      "pass": "roomora1111",
+      "options": "retryWrites=true&w=majority&appName=Roomora"
+    }
+  },
+  "application": {
+    "port": 1111
+  },
+  "JWT_SECRET": "d48eb832984881dec472ece8f786cad5c68e09f13c58a1cd7f67f899c2380284",
+  "cloudinary": {
+    "cloudname": "djth3crih",
+    "api_key": "828177291438539",
+    "api_secret": "gTCAbxKbrIAMb2rb011v_w8S-pQ"
+  }
+}
