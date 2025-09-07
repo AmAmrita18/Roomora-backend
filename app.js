@@ -53,5 +53,13 @@ _.each(routesList, (router) => {
   app.use(router.allowedMethods());
 });
 
-// ⚡ Vercel requires export instead of listen
-module.exports = app.callback();
+// 👉 Export for Vercel (Serverless)
+if (process.env.VERCEL) {
+  module.exports = app.callback();
+} else {
+  // 👉 Local Development
+  const PORT = process.env.PORT || 1111;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}
